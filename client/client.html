@@ -3,6 +3,9 @@
 
 <head>
     <title>Our simple HTTP server</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
+
     <style>
         html,
         body {
@@ -29,7 +32,6 @@
 
     </style>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
     <script type="text/babel">
 
     </script>
@@ -40,52 +42,109 @@
 
             const content = document.querySelector("#content");
 
-            const h1 = document.createElement('h1');
-            const p = document.createElement('p');
-
-            if (type === 'application/json') {
-                const obj = JSON.parse(xhr.response);
-                h1.textContent = `${xhr.status}`;
-                p.textContent = `Message: ${obj.message}`;
-            } else if (type === 'text/xml') {
-                const status = xhr.responseXML.querySelector('status').textContent;
-                const response = xhr.responseXML.querySelector('response').textContent;
-
-                h1.textContent = `Status: ${status}`;
-                p.textContent = `Response; ${response}`;
-            }
-
-            if (!xhr.status || xhr.status !== 200) {
-                console.log(`id: ${xhr.status}`);
-            }
-
-            //console.log(`id: ${xhr.status}`);
-            console.log(`${xhr.response}`);
-
-            //check the xhr status code and handle accordingly
             switch (xhr.status) {
                 case 200: //success
+                    if (type === 'application/json') {
+                        const obj = JSON.parse(xhr.response);
+                        content.innerHTML = `<b>Success</b> - Message: ${obj.message}`;
+
+                        console.log(`message: ${obj.message}`);
+                    } else if (type === 'text/xml') {
+                        console.log(xhr);
+                        content.innerHTML = `Response; ${response}`;
+                    }
                     break;
                 case 400: //bad request 
+                    if (type === 'application/json') {
+                        const obj = JSON.parse(xhr.response);
+                        content.innerHTML = `<b>Bad Request</b> - Message: ${obj.message}`;
+
+                        console.log(`id: "badRequest"`);
+                        console.log(`message: ${obj.message}`);
+                    } else if (type === 'text/xml') {
+                        const status = xhr.responseXML.querySelector('status').textContent;
+                        const response = xhr.responseXML.querySelector('response').textContent;
+
+                        content.innerHTML = `Response; ${response}`;
+                    }
                     break;
-                case 404: //not found (requested resource does not exist)
+                case 401: //unauthorized
+                    if (type === 'application/json') {
+                        const obj = JSON.parse(xhr.response);
+                        content.innerHTML = `<b>Unauthorized</b> - Message: ${obj.message}`;
+
+                        console.log(`id: "unauthorized"`);
+                        console.log(`message: ${obj.message}`);
+                    } else if (type === 'text/xml') {
+                        const status = xhr.responseXML.querySelector('status').textContent;
+                        const response = xhr.responseXML.querySelector('response').textContent;
+
+                        content.innerHTML = `Response; ${response}`;
+                    }
                     break;
-                case 500:
+                case 403: //forbidden
+                    if (type === 'application/json') {
+                        const obj = JSON.parse(xhr.response);
+                        content.innerHTML = `<b>Forbidden</b> - Message: ${obj.message}`;
+
+                        console.log(`id: "forbidden"`);
+                        console.log(`message: ${obj.message}`);
+                    } else if (type === 'text/xml') {
+                        const status = xhr.responseXML.querySelector('status').textContent;
+                        const response = xhr.responseXML.querySelector('response').textContent;
+
+                        content.innerHTML = `Response; ${response}`;
+                    }
                     break;
-                case 501:
+                case 500: //internal error
+                    if (type === 'application/json') {
+                        const obj = JSON.parse(xhr.response);
+                        content.innerHTML = `<b>Internal Server Error</b> - Message: ${obj.message}`;
+
+                        console.log(`id: "internalError"`);
+                        console.log(`message: ${obj.message}`);
+                    } else if (type === 'text/xml') {
+                        const status = xhr.responseXML.querySelector('status').textContent;
+                        const response = xhr.responseXML.querySelector('response').textContent;
+
+                        content.innerHTML = `Response; ${response}`;
+                    }
                     break;
-                default: //default other errors we are not handling in this example
+                case 501: //not Implemented
+                    if (type === 'application/json') {
+                        const obj = JSON.parse(xhr.response);
+                        content.innerHTML = `<b>Not Implemented</b> - Message: ${obj.message}`;
+
+                        console.log(`id: "notImplemented"`);
+                        console.log(`message: ${obj.message}`);
+                    } else if (type === 'text/xml') {
+                        const status = xhr.responseXML.querySelector('status').textContent;
+                        const response = xhr.responseXML.querySelector('response').textContent;
+
+                        content.innerHTML = `Response; ${response}`;
+                    }
+                    break;
+                default: //resource not found
+                    if (type === 'application/json') {
+                        const obj = JSON.parse(xhr.response);
+                        content.innerHTML = `<b>Resource Not Found</b> - Message: ${obj.message}`;
+
+                        console.log(`id: "notFound"`);
+                        console.log(`message: ${obj.message}`);
+                    } else if (type === 'text/xml') {
+                        const status = xhr.responseXML.querySelector('status').textContent;
+                        const response = xhr.responseXML.querySelector('response').textContent;
+
+                        content.innerHTML = `Response; ${response}`;
+                    }
                     break;
             }
-
-            content.appendChild(h1, h1);
-            content.appendChild(p, p);
         };
 
-        const sendAjax = (url) => {
+        const sendAjax = (url, acceptedType) => {
             const xhr = new XMLHttpRequest();
             xhr.open('GET', url);
-            xhr.setRequestHeader("Accept", 'application/json');
+            xhr.setRequestHeader("Accept", acceptedType);
 
             xhr.onload = () => handleResponse(xhr);
 
@@ -93,7 +152,7 @@
         };
 
         const init = () => {
-            send.onclick = () => sendAjax(document.getElementById("page").value);
+            send.onclick = () => sendAjax(document.getElementById("page").value, 'text/xml');
         };
 
         window.onload = init;
