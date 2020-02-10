@@ -50,8 +50,7 @@
 
                         console.log(`message: ${obj.message}`);
                     } else if (type === 'text/xml') {
-                        console.log(xhr);
-                        content.innerHTML = `Response; ${response}`;
+                        console.log("xml success");
                     }
                     break;
                 case 400: //bad request 
@@ -152,7 +151,7 @@
         };
 
         const init = () => {
-            send.onclick = () => sendAjax(document.getElementById("page").value, 'text/xml');
+            send.onclick = () => sendAjax(document.getElementById("page").value, document.getElementById("type").value);
         };
 
         window.onload = init;
