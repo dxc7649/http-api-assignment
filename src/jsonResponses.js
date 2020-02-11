@@ -48,7 +48,7 @@ const badRequest = (request, response, params, acceptedTypes) => {
     const badString = JSON.stringify(responseJSON);
     
     return respondJSON(request, response, 400, badString, 'application/json');
-};
+}
 
 // unauthorized
 const unauthorized = (request, response, params) => {
