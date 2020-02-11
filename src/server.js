@@ -9,6 +9,7 @@ const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const urlStruct = {
   '/': htmlHandler.getIndex,
+  '/style.css': htmlHandler.getCSS,
   '/success': jsonHandler.success,
   '/badRequest': jsonHandler.badRequest,
   '/unauthorized': jsonHandler.unauthorized,
@@ -28,15 +29,18 @@ const onRequest = (request, response) => {
   // NOT USING yet - but we can test with ?name=Kirby
   const params = query.parse(parsedUrl.query);
 
+  const acceptedTypes = request.headers.accept.split(',');
+
   console.log(parsedUrl.pathname);
   console.log(params);
 
   // check if the path name (the /name part of the url) matches
   // any in our url object. If so call that function. If not, default to index.
   if (urlStruct[parsedUrl.pathname]) {
-    urlStruct[parsedUrl.pathname](request, response, params);
+    // urlStruct[parsedUrl.pathname](request, response, params);
+    urlStruct[parsedUrl.pathname](request, response, params, acceptedTypes);
   } else {
-    urlStruct.anythingElse(request, response, params);
+    urlStruct.anythingElse(request, response, params, acceptedTypes);
   }
 };
 

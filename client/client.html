@@ -5,33 +5,8 @@
     <title>Our simple HTTP server</title>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
-
-    <style>
-        html,
-        body {
-            height: 100%;
-            width: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
-        #top {
-            text-align: center;
-            margin: 0 auto;
-        }
-
-        #top h1 {
-            font-size: 2em;
-        }
-
-        #content {
-            margin-top: 100px;
-            font-size: 2em;
-            text-align: center;
-        }
-
-    </style>
-
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    
     <script type="text/babel">
 
     </script>
@@ -50,8 +25,10 @@
 
                         console.log(`message: ${obj.message}`);
                     } else if (type === 'text/xml') {
-                        console.log(xhr);
-                        content.innerHTML = `Response; ${response}`;
+                        const message = xhr.responseXML.querySelector('message').textContent;
+                        content.innerHTML = `<b>Success</b> - Message: ${message}`;
+                        
+                        console.log(xhr.responseXML.querySelector('response'));
                     }
                     break;
                 case 400: //bad request 
@@ -152,7 +129,7 @@
         };
 
         const init = () => {
-            send.onclick = () => sendAjax(document.getElementById("page").value, 'text/xml');
+            send.onclick = () => sendAjax(document.getElementById("page").value, document.getElementById("type").value);
         };
 
         window.onload = init;
