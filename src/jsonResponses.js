@@ -39,71 +39,125 @@ const badRequest = (request, response, params, acceptedTypes) => {
         if (acceptedTypes[0] === 'text/xml') {
             let responseXML = '<response>';
             responseXML = `${responseXML} <message>${responseJSON.message}</message>`;
+            responseXML = `${responseXML} <id>${responseJSON.id}</id>`;
             responseXML = `${responseXML} </response>`;
 
-            return respondJSON(request, response, 200, responseXML, 'text/xml');
-        } 
+            return respondJSON(request, response, 400, responseXML, 'text/xml');
+        }
     }
 
     const badString = JSON.stringify(responseJSON);
-    
+
     return respondJSON(request, response, 400, badString, 'application/json');
-}
+};
 
 // unauthorized
-const unauthorized = (request, response, params) => {
+const unauthorized = (request, response, params, acceptedTypes) => {
     const responseJSON = {
         message: 'You have successfully viewed the content',
     };
 
-    if (!params.valid || params.valid !== 'yes') {
+    if (!params.loggedIn || params.loggedIn !== 'yes') {
         responseJSON.message = 'Missing loggedIn query parameter set to yes';
         responseJSON.id = 'unauthorized';
-        return respondJSON(request, response, 401, responseJSON);
+
+        if (acceptedTypes[0] === 'text/xml') {
+            let responseXML = '<response>';
+            responseXML = `${responseXML} <message>${responseJSON.message}</message>`;
+            responseXML = `${responseXML} <id>${responseJSON.id}</id>`;
+            responseXML = `${responseXML} </response>`;
+
+            return respondJSON(request, response, 401, responseXML, 'text/xml');
+        }
     }
 
-    return respondJSON(request, response, 200, responseJSON);
+    const unString = JSON.stringify(responseJSON);
+
+    return respondJSON(request, response, 401, unString, 'application/json');
 };
 
 // forbidden
-const forbidden = (request, response) => {
+const forbidden = (request, response, params, acceptedTypes) => {
     const responseJSON = {
         message: 'You do not have access to this content.',
         id: 'forbidden',
     };
 
-    respondJSON(request, response, 403, responseJSON);
+    if (acceptedTypes[0] === 'text/xml') {
+        let responseXML = '<response>';
+        responseXML = `${responseXML} <message>${responseJSON.message}</message>`;
+        responseXML = `${responseXML} <id>${responseJSON.id}</id>`;
+        responseXML = `${responseXML} </response>`;
+
+        return respondJSON(request, response, 403, responseXML, 'text/xml');
+    }
+
+    const forString = JSON.stringify(responseJSON);
+
+    return respondJSON(request, response, 403, forString, 'application/json');
 };
 
 // internal
-const internal = (request, response) => {
+const internal = (request, response, params, acceptedTypes) => {
     const responseJSON = {
         message: 'Internal Server Error. Somethign went wrong.',
         id: 'internal',
     };
 
-    respondJSON(request, response, 500, responseJSON);
+    if (acceptedTypes[0] === 'text/xml') {
+        let responseXML = '<response>';
+        responseXML = `${responseXML} <message>${responseJSON.message}</message>`;
+        responseXML = `${responseXML} <id>${responseJSON.id}</id>`;
+        responseXML = `${responseXML} </response>`;
+
+        return respondJSON(request, response, 500, responseXML, 'text/xml');
+    }
+
+    const inString = JSON.stringify(responseJSON);
+
+    return respondJSON(request, response, 500, inString, 'application/json');
 };
 
 // notImplemented
-const notImplemented = (request, response) => {
+const notImplemented = (request, response, params, acceptedTypes) => {
     const responseJSON = {
         message: 'A get request for this page has not been implemented yet. Check again later for updated content',
         id: 'notImplemented',
     };
 
-    respondJSON(request, response, 501, responseJSON);
+    if (acceptedTypes[0] === 'text/xml') {
+        let responseXML = '<response>';
+        responseXML = `${responseXML} <message>${responseJSON.message}</message>`;
+        responseXML = `${responseXML} <id>${responseJSON.id}</id>`;
+        responseXML = `${responseXML} </response>`;
+
+        return respondJSON(request, response, 501, responseXML, 'text/xml');
+    }
+
+    const noString = JSON.stringify(responseJSON);
+
+    return respondJSON(request, response, 501, noString, 'application/json');
 };
 
 // anythingElse
-const anythingElse = (request, response) => {
+const anythingElse = (request, response, params, acceptedTypes) => {
     const responseJSON = {
         message: 'The page you are looking for was not found.',
         id: 'notFound',
     };
 
-    // return our json with a 404 not found error code
-    respondJSON(request, response, 404, responseJSON);
+    if (acceptedTypes[0] === 'text/xml') {
+        let responseXML = '<response>';
+        responseXML = `${responseXML} <message>${responseJSON.message}</message>`;
+        responseXML = `${responseXML} <id>${responseJSON.id}</id>`;
+        responseXML = `${responseXML} </response>`;
+
+        return respondJSON(request, response, 404, responseXML, 'text/xml');
+    }
+
+    const anyString = JSON.stringify(responseJSON);
+
+    return respondJSON(request, response, 404, anyString, 'application/json');
 };
 
 module.exports = {

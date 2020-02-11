@@ -6,7 +6,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/style.css">
-    
+
     <script type="text/babel">
 
     </script>
@@ -27,7 +27,7 @@
                     } else if (type === 'text/xml') {
                         const message = xhr.responseXML.querySelector('message').textContent;
                         content.innerHTML = `<b>Success</b> - Message: ${message}`;
-                        
+
                         console.log(xhr.responseXML.querySelector('response'));
                     }
                     break;
@@ -39,10 +39,10 @@
                         console.log(`id: "badRequest"`);
                         console.log(`message: ${obj.message}`);
                     } else if (type === 'text/xml') {
-                        const status = xhr.responseXML.querySelector('status').textContent;
-                        const response = xhr.responseXML.querySelector('response').textContent;
+                        const message = xhr.responseXML.querySelector('message').textContent;
+                        content.innerHTML = `<b>Bad Request</b> - Message: ${message}`;
 
-                        content.innerHTML = `Response; ${response}`;
+                        console.log(xhr.responseXML.querySelector('response'));
                     }
                     break;
                 case 401: //unauthorized
@@ -53,10 +53,10 @@
                         console.log(`id: "unauthorized"`);
                         console.log(`message: ${obj.message}`);
                     } else if (type === 'text/xml') {
-                        const status = xhr.responseXML.querySelector('status').textContent;
-                        const response = xhr.responseXML.querySelector('response').textContent;
+                        const message = xhr.responseXML.querySelector('message').textContent;
+                        content.innerHTML = `<b>Unauthorized</b> - Message: ${message}`;
 
-                        content.innerHTML = `Response; ${response}`;
+                        console.log(xhr.responseXML.querySelector('response'));
                     }
                     break;
                 case 403: //forbidden
@@ -67,10 +67,10 @@
                         console.log(`id: "forbidden"`);
                         console.log(`message: ${obj.message}`);
                     } else if (type === 'text/xml') {
-                        const status = xhr.responseXML.querySelector('status').textContent;
-                        const response = xhr.responseXML.querySelector('response').textContent;
+                        const message = xhr.responseXML.querySelector('message').textContent;
+                        content.innerHTML = `<b>Forbidden</b> - Message: ${message}`;
 
-                        content.innerHTML = `Response; ${response}`;
+                        console.log(xhr.responseXML.querySelector('response'));
                     }
                     break;
                 case 500: //internal error
@@ -81,10 +81,10 @@
                         console.log(`id: "internalError"`);
                         console.log(`message: ${obj.message}`);
                     } else if (type === 'text/xml') {
-                        const status = xhr.responseXML.querySelector('status').textContent;
-                        const response = xhr.responseXML.querySelector('response').textContent;
+                        const message = xhr.responseXML.querySelector('message').textContent;
+                        content.innerHTML = `<b>Internal Server Error</b> - Message: ${message}`;
 
-                        content.innerHTML = `Response; ${response}`;
+                        console.log(xhr.responseXML.querySelector('response'));
                     }
                     break;
                 case 501: //not Implemented
@@ -95,10 +95,10 @@
                         console.log(`id: "notImplemented"`);
                         console.log(`message: ${obj.message}`);
                     } else if (type === 'text/xml') {
-                        const status = xhr.responseXML.querySelector('status').textContent;
-                        const response = xhr.responseXML.querySelector('response').textContent;
-
-                        content.innerHTML = `Response; ${response}`;
+                        const message = xhr.responseXML.querySelector('message').textContent;
+                        content.innerHTML = `<b>Not Implemented</b> - Message: ${message}`;
+                        
+                        console.log(xhr.responseXML.querySelector('response'));
                     }
                     break;
                 default: //resource not found
@@ -109,10 +109,10 @@
                         console.log(`id: "notFound"`);
                         console.log(`message: ${obj.message}`);
                     } else if (type === 'text/xml') {
-                        const status = xhr.responseXML.querySelector('status').textContent;
-                        const response = xhr.responseXML.querySelector('response').textContent;
-
-                        content.innerHTML = `Response; ${response}`;
+                       const message = xhr.responseXML.querySelector('message').textContent;
+                        content.innerHTML = `<b>Resource Not Found</b> - Message: ${message}`;
+                        
+                        console.log(xhr.responseXML.querySelector('response'));
                     }
                     break;
             }
